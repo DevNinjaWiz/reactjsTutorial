@@ -1,64 +1,66 @@
-import { useEffect, useState } from "react";
 import { BlogList } from "./BlogList";
+import { useFetch } from "./useFetch";
 
 export const Home = () => {
-  const [name, setName] = useState("mario");
-  const onAppendName = () => setName((prev) => `${prev} - updated`);
-  const onChangeName = () => setName("Luigi");
-  const onResetName = () => setName("mario");
+  // const [name, setName] = useState("mario");
+  // const onAppendName = () => setName((prev) => `${prev} - updated`);
+  // const onChangeName = () => setName("Luigi");
+  // const onResetName = () => setName("mario");
 
-  const [blogs, setBlogs] = useState([
-    { title: "My new website", body: "lorem ipsum...", author: "mario", id: 1 },
-    { title: "Welcome party!", body: "lorem ipsum...", author: "yoshi", id: 2 },
-    {
-      title: "Web dev top tips",
-      body: "lorem ipsum...",
-      author: "luigi",
-      id: 3,
-    },
-  ]);
-  const marioBlogs = blogs.filter((blog) => blog.author === "mario");
-  const deleteBlog = (id) =>
-    setBlogs((prev) => prev.filter((blog) => blog.id !== id));
-  const addBlog = () => {
-    setBlogs((prev) => {
-      return [
-        ...prev,
-        {
-          title: "It is me Mario",
-          body: "lorem ipsum...",
-          author: "mario",
-          id: prev.length + 1,
-        },
-      ];
-    });
-  };
+  // const [blogs, setBlogs] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    console.log("js test", blogs);
-  }, [name]);
+  // const marioBlogs = useMemo(
+  //   () => blogs.filter((blog) => blog.author === "mario"),
+  //   [blogs]
+  // );
+  // const deleteBlog = (id) =>
+  //   setBlogs((prev) => prev.filter((blog) => blog.id !== id));
+  // const addBlog = () => {
+  //   setBlogs((prev) => {
+  //     return [
+  //       ...prev,
+  //       {
+  //         title: "It is me Mario",
+  //         body: "lorem ipsum...",
+  //         author: "mario",
+  //         id: prev.length + 1,
+  //       },
+  //     ];
+  //   });
+  // };
+
+  const {
+    data: blogs,
+    isLoading,
+    error,
+  } = useFetch("http://localhost:8000/blogs");
 
   return (
     <div className="home">
-      <h2>Homepage</h2>
-      <p>{name}</p>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {blogs && (
+        <BlogList
+          blogs={blogs}
+          title="All Blogs!"
+          // onDeleteBlog={deleteBlog}
+        ></BlogList>
+      )}
 
-      <button onClick={onAppendName}>Append name</button>
+      {/* <p>{name}</p> */}
+      {/* <button onClick={onAppendName}>Append name</button>
       <button onClick={onChangeName}>Change name</button>
-      <button onClick={onResetName}>Reset name</button>
+      <button onClick={onResetName}>Reset name</button> */}
 
-      <BlogList
-        blogs={blogs}
-        title="All Blogs!"
-        onDeleteBlog={deleteBlog}
-      ></BlogList>
-      <BlogList
+      {/* <BlogList
         blogs={marioBlogs}
         title="Mario Blogs!"
         onDeleteBlog={deleteBlog}
-      ></BlogList>
+      ></BlogList> */}
 
-      <button onClick={addBlog}>Add Blog</button>
+      {/* <button onClick={addBlog}>Add Blog</button> */}
     </div>
   );
 };

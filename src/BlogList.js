@@ -7,7 +7,7 @@ export const BlogList = ({ blogs, title, onDeleteBlog }) => {
         <div className="blog-preview" key={blog.id}>
           <h2>{blog.title}</h2>
           <p>Written by {blog.author}</p>
-          <button onClick={() => onDeleteBlog(blog.id)}>Delete Blog</button>
+          {/* <button onClick={() => onDeleteBlog(blog.id)}>Delete Blog</button> */}
         </div>
       ))}
     </div>
